@@ -1,18 +1,76 @@
-const getAllStudents= async (req , res) => {
-    res.send('getAllStudents')
-}
+const Student = require('../models/student');
+const { StatusCodes } = require('http-status-codes');
+const { BadRequestError, NotFoundError } = require('../errors');
 
-const getStudent= async (req , res) => {
-    res.send('get a Student')
-}
-const createStudent= async (req , res) => {
-    res.send('Create a student')
-}
-const updateStudent= async (req , res) => {
-    res.send('update a student')
-}
-const deleteStudent= async (req , res) => {
-    res.send('delete  a student ')
-}
+const getAllStudents = async (req, res) => {
+  const students = await Student.find({ createdBy: req.user.userId }).sort('createdAt');
+  res.status(StatusCodes.OK).json({ students, count: students.length });
+};
 
-module.exports = {getAllStudents ,getStudent, createStudent, updateStudent ,deleteStudent ,}
+const getStudent = async (req, res) => {
+  const {
+    user: { userId },
+    params: { id: studentId },
+  } = req;
+
+  const student = await Student.findOne({
+    _id: studentId,
+    createdBy: userId,
+  });
+  if (!student) {
+    throw new NotFoundError(`No Student with id ${studentId}`);
+  }
+  res.status(StatusCodes.OK).json({ student });
+};
+
+const createStudent = async (req, res) => {
+  req.body.createdBy = req.user.userId;
+  const student = await Student.create(req.body);
+  res.status(StatusCodes.CREATED).json({ student });
+};
+
+const updateStudent = async (req, res) => {
+  const {
+    body: { name, StudentId },
+    user: { userId },
+    params: { id: studentId },
+  } = req;
+
+  if (name === '' || StudentId === '') {
+    throw new BadRequestError('Name or StudentId fields cannot be empty');
+  }
+
+  const student = await Student.findOneAndUpdate(
+    { _id: studentId, createdBy: userId },
+    req.body,
+    { new: true, runValidators: true }
+  );
+  if (!student) {
+    throw new NotFoundError(`No Student with id ${studentId}`);
+  }
+  res.status(StatusCodes.OK).json({ student });
+};
+
+const deleteStudent = async (req, res) => {
+  const {
+    user: { userId },
+    params: { id: studentId },
+  } = req;
+
+  const student = await Student.findOneAndRemove({
+    _id: studentId,
+    createdBy: userId,
+  });
+  if (!student) {
+    throw new NotFoundError(`No Student with id ${studentId}`);
+  }
+  res.status(StatusCodes.OK).send();
+};
+
+module.exports = {
+  createStudent,
+  deleteStudent,
+  getAllStudents,
+  updateStudent,
+  getStudent,
+};
