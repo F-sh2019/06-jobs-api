@@ -6,7 +6,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
   let customError={
     //set default
  statuscode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR ,
- msg: err.mrssgae || 'somthing went wrong . try again later'
+ msg: err.mrssgae || 'something went wrong . try again later'
   }
   // if (err instanceof CustomAPIError) {
   //   return res.status(err.statusCode).json({ msg: err.message })
