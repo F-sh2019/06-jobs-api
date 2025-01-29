@@ -41,7 +41,7 @@ app.use(xss());
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/jobs', authenticateUser, jobsRouter);
 app.use('/api/v1/students', authenticateUser, studentsRouter);
-
+app.use(express.static("public"));
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
