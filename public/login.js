@@ -7,7 +7,8 @@ import {
     setToken,
   } from "./index.js";
   import { showLoginRegister } from "./loginRegister.js";
-  import { showJobs } from "./jobs.js";
+  //import { showJobs } from "./jobs.js";
+  import { showStudents } from "./student.js";
   
   let loginDiv = null;
   let email = null;
@@ -45,7 +46,8 @@ import {
               email.value = "";
               password.value = "";
   
-              showJobs();
+              //showJobs();
+              showStudents() ;
             } else {
               message.textContent = data.msg;
             }

@@ -46,7 +46,7 @@ app.use(express.static("public"));
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3200;
 
 const start = async () => {
   try {
