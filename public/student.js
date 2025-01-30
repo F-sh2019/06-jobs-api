@@ -64,15 +64,16 @@ import {
         if (data.count === 0) {
           jobsTable.replaceChildren(...children); // clear this for safety
         } else {
-          for (let i = 0; i < data.jobs.length; i++) {
+            console.log(data)
+          for (let i = 0; i < data.students.length; i++) {
             let rowEntry = document.createElement("tr");
   
-            let editButton = `<td><button type="button" class="editButton" data-id=${data.jobs[i]._id}>edit</button></td>`;
-            let deleteButton = `<td><button type="button" class="deleteButton" data-id=${data.jobs[i]._id}>delete</button></td>`;
+            let editButton = `<td><button type="button" class="editButton" data-id=${data.students[i]._id}>edit</button></td>`;
+            let deleteButton = `<td><button type="button" class="deleteButton" data-id=${data.students[i]._id}>delete</button></td>`;
             let rowHTML = `
-            <td>${data.jobs[i].name}</td>
-            <td>${data.jobs[i].studentId}</td>
-            <td>${data.jobs[i].startDate}</td>
+            <td>${data.students[i].name}</td>
+            <td>${data.students[i].StudentId}</td>
+            <td>${data.students[i].StartDate}</td>
               <div>${editButton}${deleteButton}</div>`;
   
             rowEntry.innerHTML = rowHTML;

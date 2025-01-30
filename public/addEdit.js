@@ -15,8 +15,9 @@ export const handleAddEdit = () => {
   addingJob = document.getElementById("adding-job");
   const editCancel = document.getElementById("edit-cancel");
 
+
   addEditDiv.addEventListener("click", async (e) => {
-    if (inputEnabled && e.target.nodeName === "BUTTON") {
+  if (inputEnabled && e.target.nodeName === "BUTTON") {
       if (e.target === addingJob) {
 
 
@@ -50,6 +51,8 @@ export const handleAddEdit = () => {
               status: status.value,
             }),
           });
+
+          console.log(response)
       
           const data = await response.json();
           if (response.status === 200 || response.status === 201) {

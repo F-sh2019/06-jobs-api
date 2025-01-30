@@ -29,6 +29,13 @@ export const handleAddEdit = () => {
  
 
   addEditDiv.addEventListener("click", async (e) => {
+    console.log("studentName:",studentName , studentName.value);
+    console.log("studentId:", studentId, studentId.value);
+    console.log("startDate:", startDate , startDate.value);
+   
+    console.log("addingJob:", addingJob);
+  
+
     if (inputEnabled && e.target.nodeName === "BUTTON") {
       if (e.target === addingJob) {
 
@@ -47,44 +54,49 @@ export const handleAddEdit = () => {
             url = `/api/v1/students/${addEditDiv.dataset.id}`;
 
         }
-      
-
-
+    
         try {
-          const response = await fetch(url, {
-            method: method,
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              name: studentName.value,
-              studentId: studentId.value,
-              startDate: startDate.value,
-            }),
-          });
-      
-          const data = await response.json();
-          if (response.status === 200 || response.status === 201) {
-            if (response.status === 200) {
-              // a 200 is expected for a successful update
-              message.textContent = "The job entry was updated.";
-            } else {
-              // a 201 is expected for a successful create
-              message.textContent = "The job entry was created.";
+            
+                const response = await fetch(url, {
+                  method: method,
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                  body: JSON.stringify({
+                    name: studentName.value,
+                    StudentId: studentId.value,
+                    StartDate: startDate.value,
+                  }),
+                });
+            
+          
+              const data = await response.json();
+              
+              if (response.status === 200 || response.status === 201) {
+                if (response.status === 200) {
+                  // a 200 is expected for a successful update
+                  message.textContent = "The student entry was updated.";
+                } else {
+                  // a 201 is expected for a successful create
+                  message.textContent = "The student entry was created.";
+                }
+          
+                studentName.value = "";
+                studentId.value = "";
+                startDate.value = "";
+                showStudents();
+              } else {
+                message.textContent = data.msg;
+              }
+            } catch (err) {
+    
+              console.log(err);
+              message.textContent = "A communication error occurred.";
             }
-      
-            studentName.value = "";
-            studentId.value = "";
-            startDate.value = "";
-            showStudents();
-          } else {
-            message.textContent = data.msg;
-          }
-        } catch (err) {
-          console.log(err);
-          message.textContent = "A communication error occurred.";
-        }
+       
+
+        
         enableInput(true);
       
      } else if (e.target === editCancel) {
@@ -109,7 +121,7 @@ export const showAddEdit = async (jobId , context) => {
     } 
     else 
     {
-        console.log("Edit")
+       
       enableInput(false);
   
       try {
@@ -122,10 +134,11 @@ export const showAddEdit = async (jobId , context) => {
         });
   
         const data = await response.json();
+        console.log(data)
         if (response.status === 200) {
-          studentName.value = data.job.name;
-          studentId.value = data.job.studentId;
-          startDate.value = data.job.startDate;
+          studentName.value = data.student.name;
+          studentId.value = data.student.StudentId;
+          startDate.value = new Date(data.student.StartDate).toISOString().split("T")[0];
           addingJob.textContent = context;
           if (context==="update")  {
           message.textContent = ""}
