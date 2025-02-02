@@ -64,7 +64,7 @@ const deleteStudent = async (req, res) => {
   if (!student) {
     throw new NotFoundError(`No Student with id ${studentId}`);
   }
-  res.status(StatusCodes.OK).send();
+  res.status(StatusCodes.OK).json({ msg: "The entry was deleted." });
 };
 
 module.exports = {
